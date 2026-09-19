@@ -1,0 +1,518 @@
+# ==========================================================
+# ORIAN - CUSTOMER SERVICE CHATBOT
+# GUI PROJECT USING PYTHON AND TKINTER
+# ==========================================================
+
+import tkinter as tk
+from tkinter import scrolledtext, simpledialog
+from datetime import datetime
+
+# GLOBAL VARIABLES
+
+company_name = "Orian Online Store"
+complaints_list = []
+feedback_list = []
+
+waiting_for_choice = False
+chat_ended = False
+
+# MAIN WINDOW
+
+root = tk.Tk()
+root.title("Orian - Customer Support")
+root.geometry("650x750")
+root.minsize(450, 550)
+root.configure(bg="#EAF2F8")
+
+# HEADER
+
+header = tk.Label(
+    root,
+    text="ORIAN ONLINE STORE",
+    font=("Arial", 22, "bold"),
+    bg="#2874A6",
+    fg="white",
+    pady=15
+)
+header.pack(fill="x")
+
+subtitle = tk.Label(
+    root,
+    text="Customer Support Assistant",
+    font=("Arial", 14),
+    bg="#D6EAF8",
+    fg="#154360",
+    pady=10
+)
+subtitle.pack(fill="x")
+
+# CHAT DISPLAY AREA
+
+chat_area = scrolledtext.ScrolledText(
+    root,
+    wrap=tk.WORD,
+    font=("Arial", 12),
+    bg="white",
+    fg="#222222",
+    padx=12,
+    pady=12,
+    state="disabled"
+)
+chat_area.pack(
+    padx=12,
+    pady=12,
+    fill="both",
+    expand=True
+)
+
+# DISPLAY MESSAGE
+
+def display_message(sender, message):
+    chat_area.config(state="normal")
+    chat_area.insert(
+        tk.END,
+        sender + ": " + str(message) + "\n\n"
+    )
+    chat_area.config(state="disabled")
+    chat_area.see(tk.END)
+
+# WELCOME MESSAGE
+
+def welcome_message():
+    display_message(
+        "Bot",
+        "Welcome to Orian Online Store!\n\n"
+        "I am your Customer Support Assistant.\n"
+        "How can I help you today?\n\n"
+        "Type 'menu' or click the Support Menu button "
+        "to view all services."
+    )
+
+# CUSTOMER SUPPORT MENU
+
+def show_menu():
+    global waiting_for_choice
+
+    if chat_ended:
+        return
+
+    waiting_for_choice = True
+
+    menu_text = (
+        "CUSTOMER SUPPORT MENU\n"
+        "================================\n"
+        "1. Store Information\n"
+        "2. Business Hours\n"
+        "3. Product Information\n"
+        "4. Order Tracking\n"
+        "5. Payment Information\n"
+        "6. Return and Refund Policy\n"
+        "7. Delivery Information\n"
+        "8. Contact Customer Support\n"
+        "9. Register a Complaint\n"
+        "10. Give Feedback\n"
+        "11. Frequently Asked Questions\n"
+        "12. Exit\n"
+        "================================\n"
+        "Please type a number from 1 to 12."
+    )
+
+    display_message("Bot", menu_text)
+
+# STORE INFORMATION
+
+def store_information():
+    return (
+        "STORE INFORMATION\n\n"
+        "Company: Orian Online Store\n"
+        "We are an online shopping store.\n"
+        "We offer various products to customers.\n"
+        "Customers can shop online conveniently.\n"
+        "Home delivery is available for eligible orders."
+    )
+
+# BUSINESS HOURS
+
+def business_hours():
+    return (
+        "BUSINESS HOURS\n\n"
+        "Monday to Saturday: 9 AM - 6 PM\n"
+        "Sunday: Closed\n"
+        "Customer support is available during working hours."
+    )
+
+# PRODUCT INFORMATION
+
+def product_information():
+    return (
+        "PRODUCT INFORMATION\n\n"
+        "Available Product Categories:\n"
+        "1. Electronics\n"
+        "2. Clothing\n"
+        "3. Home Appliances\n"
+        "4. Books\n"
+        "5. Accessories\n\n"
+        "For product prices, please check our store website."
+    )
+
+# ORDER TRACKING
+
+def order_tracking():
+    order_id = simpledialog.askstring(
+        "Order Tracking",
+        "Please enter your Order ID:",
+        parent=root
+    )
+
+    if order_id is None:
+        return "Order tracking cancelled."
+
+    order_id = order_id.strip()
+
+    if order_id == "":
+        return "Order ID cannot be empty."
+
+    elif order_id.isdigit():
+        return (
+            "ORDER TRACKING\n\n"
+            "Order ID: " + order_id + "\n\n"
+            "This is a demonstration chatbot.\n"
+            "Live order tracking is not connected.\n"
+            "Please contact customer support for actual status."
+        )
+
+    else:
+        return "Invalid Order ID. Please enter numbers only."
+
+# PAYMENT INFORMATION
+
+def payment_information():
+    return (
+        "PAYMENT INFORMATION\n\n"
+        "Available Payment Methods:\n"
+        "1. UPI\n"
+        "2. Debit Card\n"
+        "3. Credit Card\n"
+        "4. Net Banking\n"
+        "5. Cash on Delivery (where available)\n\n"
+        "Never share your PIN or OTP with anyone."
+    )
+
+# RETURN AND REFUND POLICY
+
+def return_refund():
+    return (
+        "RETURN AND REFUND POLICY\n\n"
+        "Eligible products may be returned within 7 days.\n"
+        "Products must meet return conditions.\n"
+        "Refunds are processed after verification.\n"
+        "Refund time depends on the payment method.\n"
+        "Contact support to check product eligibility."
+    )
+
+# DELIVERY INFORMATION
+
+def delivery_information():
+    return (
+        "DELIVERY INFORMATION\n\n"
+        "Standard delivery: Usually 3-7 working days.\n"
+        "Delivery time depends on your location.\n"
+        "Delivery updates are provided after dispatch.\n"
+        "Contact support for delayed orders."
+    )
+
+# CONTACT CUSTOMER SUPPORT
+
+def contact_support():
+    return (
+        "CONTACT CUSTOMER SUPPORT\n\n"
+        "Email: support@orianstore.com\n"
+        "Phone: 9876543210\n"
+        "Working Hours: 9 AM - 6 PM\n\n"
+        "Note: These are sample contact details."
+    )
+
+# REGISTER COMPLAINT
+
+def register_complaint():
+    complaint = simpledialog.askstring(
+        "Register Complaint",
+        "Please describe your complaint:",
+        parent=root
+    )
+
+    if complaint is None:
+        return "Complaint registration cancelled."
+
+    complaint = complaint.strip()
+
+    if complaint == "":
+        return "Complaint cannot be empty."
+
+    complaints_list.append(complaint)
+    complaint_id = "CMP" + str(len(complaints_list))
+
+    return (
+        "COMPLAINT REGISTERED SUCCESSFULLY!\n\n"
+        "Complaint ID: " + complaint_id + "\n"
+        "Complaint: " + complaint + "\n\n"
+        "Your complaint has been saved for this session."
+    )
+
+# CUSTOMER FEEDBACK
+
+def customer_feedback():
+    feedback = simpledialog.askstring(
+        "Customer Feedback",
+        "Please enter your feedback:",
+        parent=root
+    )
+
+    if feedback is None:
+        return "Feedback submission cancelled."
+
+    feedback = feedback.strip()
+
+    if feedback == "":
+        return "Feedback cannot be empty."
+
+    feedback_list.append(feedback)
+
+    return (
+        "THANK YOU FOR YOUR FEEDBACK!\n\n"
+        "Your feedback has been recorded.\n"
+        "We appreciate your valuable suggestions."
+    )
+
+# FREQUENTLY ASKED QUESTIONS
+
+def faq():
+    return (
+        "FREQUENTLY ASKED QUESTIONS\n\n"
+        "Q1. How can I place an order?\n"
+        "Ans: Select a product and follow checkout.\n\n"
+        "Q2. How can I track my order?\n"
+        "Ans: Select option 4 from the menu.\n\n"
+        "Q3. What payment methods are available?\n"
+        "Ans: UPI, cards, net banking and more.\n\n"
+        "Q4. Can I return a product?\n"
+        "Ans: Eligible products can be returned as per policy.\n\n"
+        "Q5. How long does delivery take?\n"
+        "Ans: Usually 3-7 working days.\n\n"
+        "Q6. How can I contact support?\n"
+        "Ans: Email support@orianstore.com.\n\n"
+        "Q7. How can I register a complaint?\n"
+        "Ans: Select option 9 from the menu."
+    )
+
+# PROCESS MENU CHOICE
+
+def process_choice(choice):
+    global waiting_for_choice, chat_ended
+
+    waiting_for_choice = False
+    choice = choice.strip()
+
+    if choice == "12":
+        display_message(
+            "Bot",
+            "Thank you for using Orian Online Store!\nGoodbye!"
+        )
+        chat_ended = True
+        message_entry.config(state="disabled")
+        send_button.config(state="disabled")
+        return
+
+    menu_functions = {
+        "1": store_information,
+        "2": business_hours,
+        "3": product_information,
+        "4": order_tracking,
+        "5": payment_information,
+        "6": return_refund,
+        "7": delivery_information,
+        "8": contact_support,
+        "9": register_complaint,
+        "10": customer_feedback,
+        "11": faq
+    }
+
+    if choice in menu_functions:
+        try:
+            result = menu_functions[choice]()
+            display_message("Bot", result)
+
+        except Exception as error:
+            display_message("Bot", "An error occurred: " + str(error))
+
+    else:
+        display_message(
+            "Bot",
+            "Invalid choice! Please type 'menu' "
+            "and select a number from 1 to 12."
+        )
+
+# CHATBOT RESPONSE SYSTEM
+
+def chatbot_response(user_input):
+    text = user_input.lower().strip()
+
+    if text in ["hi", "hello", "hey", "hii", "good morning"]:
+        return "Hello! Welcome to Orian Online Store. How can I help?"
+
+    elif "your name" in text or "who are you" in text:
+        return "I am your Orian Customer Support Assistant."
+
+    elif "store" in text or "company" in text:
+        return store_information()
+
+    elif any(word in text for word in
+             ["hours", "timing", "working time", "open"]):
+        return business_hours()
+
+    elif any(word in text for word in
+             ["product", "products", "items", "available"]):
+        return product_information()
+
+    elif any(word in text for word in
+             ["track", "tracking", "order status", "my order"]):
+        return order_tracking()
+
+    elif any(word in text for word in
+             ["payment", "pay", "upi", "card"]):
+        return payment_information()
+
+    elif any(word in text for word in
+             ["refund", "return", "exchange"]):
+        return return_refund()
+
+    elif any(word in text for word in
+             ["delivery", "shipping", "dispatch", "parcel"]):
+        return delivery_information()
+
+    elif any(word in text for word in
+             ["contact", "phone", "email", "support"]):
+        return contact_support()
+
+    elif any(word in text for word in
+             ["complaint", "problem", "issue"]):
+        return register_complaint()
+
+    elif "feedback" in text or "suggestion" in text:
+        return customer_feedback()
+
+    elif "faq" in text or "frequently asked" in text:
+        return faq()
+
+    elif "thank" in text:
+        return "You're welcome! We are happy to help."
+
+    elif "help" in text:
+        return "Type 'menu' to see all customer support options."
+
+    else:
+        return (
+            "Sorry, I couldn't understand your question.\n"
+            "Please type 'menu' to see available services."
+        )
+
+# SEND MESSAGE
+
+def send_message(event=None):
+    global waiting_for_choice, chat_ended
+
+    if chat_ended:
+        return
+
+    message = message_entry.get().strip()
+
+    if message == "":
+        return
+
+    display_message("You", message)
+    message_entry.delete(0, tk.END)
+
+    if waiting_for_choice:
+        process_choice(message)
+        return
+
+    if message.lower() == "menu":
+        show_menu()
+        return
+
+    if message.lower() in ["bye", "goodbye", "exit"]:
+        display_message(
+            "Bot",
+            "Thank you for contacting Orian Online Store. Goodbye!"
+        )
+        chat_ended = True
+        message_entry.config(state="disabled")
+        send_button.config(state="disabled")
+        return
+
+    response = chatbot_response(message)
+    display_message("Bot", response)
+
+# INPUT FRAME
+
+input_frame = tk.Frame(root, bg="#EAF2F8")
+input_frame.pack(fill="x", padx=12, pady=10)
+
+message_entry = tk.Entry(
+    input_frame,
+    font=("Arial", 13),
+    relief="solid",
+    bd=1
+)
+message_entry.pack(
+    side="left",
+    fill="x",
+    expand=True,
+    ipady=10
+)
+
+message_entry.bind("<Return>", send_message)
+
+# SEND BUTTON
+
+send_button = tk.Button(
+    input_frame,
+    text="SEND",
+    font=("Arial", 12, "bold"),
+    bg="#2874A6",
+    fg="white",
+    width=9,
+    command=send_message
+)
+send_button.pack(side="right", padx=(8, 0), ipady=5)
+
+# SUPPORT MENU BUTTON
+
+menu_button = tk.Button(
+    root,
+    text="Show Support Menu",
+    font=("Arial", 12, "bold"),
+    bg="#5DADE2",
+    fg="white",
+    command=show_menu
+)
+menu_button.pack(pady=8)
+
+# FOOTER
+
+footer = tk.Label(
+    root,
+    text="Orian Online Store | Customer Support Chatbot",
+    font=("Arial", 9),
+    bg="#D6EAF8",
+    fg="#154360",
+    pady=8
+)
+footer.pack(fill="x", side="bottom")
+
+# START CHATBOT
+
+welcome_message()
+root.mainloop()
+
+# ================= END OF PROJECT =========================
